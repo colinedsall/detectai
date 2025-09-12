@@ -78,7 +78,7 @@ class AIContentGenerator:
             return self.generate_fallback_text(prompt, max_length)
             
         except Exception as e:
-            print(f"❌ Hugging Face API error: {e}")
+            print(f" Hugging Face API error: {e}")
             return self.generate_fallback_text(prompt, max_length)
     
     def generate_fallback_text(self, prompt: str, target_words: int = 500) -> str:
@@ -193,7 +193,7 @@ class AIContentGenerator:
     def generate_content_samples(self, num_samples: int = 50, target_words: int = 500) -> List[Dict]:
         """Generate multiple AI content samples."""
         
-        print(f"🤖 Generating {num_samples} AI content samples...")
+        print(f" Generating {num_samples} AI content samples...")
         
         samples = []
         
@@ -278,7 +278,7 @@ class AIContentGenerator:
         ]
         
         for i in range(num_samples):
-            print(f"  🔄 Generating sample {i+1}/{num_samples}...")
+            print(f"   Generating sample {i+1}/{num_samples}...")
             
             # Pick a random topic
             topic = random.choice(topics)
@@ -306,7 +306,7 @@ class AIContentGenerator:
     def save_samples(self, samples: List[Dict]):
         """Save generated samples to files."""
         
-        print(f"💾 Saving {len(samples)} AI content samples...")
+        print(f" Saving {len(samples)} AI content samples...")
         
         for sample in samples:
             # Create filename
@@ -323,7 +323,7 @@ class AIContentGenerator:
                 f.write("-" * 80 + "\n\n")
                 f.write(sample['content'])
             
-            print(f"    💾 Saved: {filename}")
+            print(f"     Saved: {filename}")
     
     def generate_summary_report(self, samples: List[Dict]):
         """Generate a summary report of generated content."""
@@ -344,7 +344,7 @@ class AIContentGenerator:
         with open('scraped_data/ai_generation_report.json', 'w') as f:
             json.dump(report, f, indent=2)
         
-        print(f"\n📊 AI Generation Summary:")
+        print(f"\n AI Generation Summary:")
         print(f"  Samples generated: {len(samples)}")
         print(f"  Total words: {total_words:,}")
         print(f"  Average words per sample: {avg_words:.1f}")
@@ -353,7 +353,7 @@ class AIContentGenerator:
 def main():
     """Main AI content generation function."""
     
-    print("🤖 AI Content Generator for Training Data")
+    print(" AI Content Generator for Training Data")
     print("=" * 60)
     
     # Create generator
@@ -363,7 +363,7 @@ def main():
     num_samples = int(input("How many AI samples to generate? (default 50): ") or "50")
     target_words = int(input("Target words per sample? (default 500): ") or "500")
     
-    print(f"\n🎯 Generating {num_samples} samples with ~{target_words} words each...")
+    print(f"\n Generating {num_samples} samples with ~{target_words} words each...")
     
     # Generate content
     samples = generator.generate_content_samples(num_samples, target_words)
@@ -374,9 +374,9 @@ def main():
     # Generate report
     generator.generate_summary_report(samples)
     
-    print(f"\n✅ AI content generation completed!")
-    print(f"📁 Check the 'scraped_data/ai/' directory for generated samples.")
-    print(f"\n💡 Next steps:")
+    print(f"\n AI content generation completed!")
+    print(f" Check the 'scraped_data/ai/' directory for generated samples.")
+    print(f"\n Next steps:")
     print(f"  1. Run web scraper: python web_scraper.py")
     print(f"  2. Label your files: python label_files.py")
     print(f"  3. Train the model: python train_ml_detector.py")

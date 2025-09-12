@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🤖 Testing AI-Generated Text File Detection"
+echo " Testing AI-Generated Text File Detection"
 echo "=========================================="
 
 echo -e "\n1. Testing with the AI-generated text file:"
@@ -24,4 +24,4 @@ curl -s -X POST "http://127.0.0.1:8000/v1/detect/text" \
   -H "Content-Type: application/json" \
   -d '{"text": "This is a simple human-written sentence for comparison."}' | jq -r '.probability_ai'
 
-echo -e "\n✅ File detection test completed!"
+echo -e "\n File detection test completed!"
