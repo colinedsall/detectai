@@ -2,7 +2,7 @@
 
 The `config.yaml` file controls every aspect of the DetectAI system. You can edit this file manually or use the built-in **Config Tab** in the GUI.
 
-## 📝 Structure Overview
+## Structure Overview
 
 ### 1. AI Generation (`ai_generation`)
 Controls how synthetic data is created.
@@ -59,7 +59,7 @@ api:
   reload: true
 ```
 
-## 💡 Best Practices
+## Best Practices
 
 1. **Balance Data**: Try to have roughly equal numbers of Human and AI samples.
    - Example: If you scrape 10 sites x 50 articles (500 Human), generate ~500 AI samples.

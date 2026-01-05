@@ -2,7 +2,7 @@
 
 A powerful, GUI-based system for detecting AI-generated text using machine learning and neural networks. Features automated data collection, diverse AI content generation, and interactive model training.
 
-## 🚀 Quick Start
+## Quick Start
 
 1. **Install Dependencies**
    ```bash
@@ -22,9 +22,9 @@ A powerful, GUI-based system for detecting AI-generated text using machine learn
    HUGGINGFACE_API_KEY=your_token_here
    ```
 
-## ✨ Key Features
+## Key Features
 
-### 🖥️ Interactive GUI
+### Interactive GUI
 - **Dashboard**: Monitor system resources.
 - **Config Editor**: Syntax-highlighted YAML editor for full system control.
 - **Data Collection**:
@@ -38,17 +38,17 @@ A powerful, GUI-based system for detecting AI-generated text using machine learn
   - Analyze text or PDFs.
   - Color-coded highlighting of AI-suspected segments.
 
-### ⚙️ Customizable
+### Customizable
 - **AI Topics**: Define what the AI writes about (e.g., "Politics", "Science") in `config.yaml`.
 - **Training Params**: Adjust epochs, batch sizes, and model types.
 - **Data Sources**: Add your own RSS feeds for human data.
 
-### 🧠 Advanced Models
+### Advanced Models
 - **Neural Network**: PyTorch-based MLP with TF-IDF features.
 - **Ensemble**: Voting classifier combining Random Forest and Logistic Regression.
 - **Robust Features**: Uses perplexity approximation, entropy, and linguistic patterns.
 
-## 📂 File Structure
+## File Structure
 
 ```
 detectai/
@@ -63,7 +63,7 @@ detectai/
 └── run_gui.py               # Application entry point
 ```
 
-## 📚 Documentation
+## Documentation
 
 - **[Quick Reference](QUICK_REFERENCE.md)**: Essential commands and GUI guide.
 - **[Configuration Guide](CONFIG_USAGE.md)**: Details on `config.yaml` parameters.
