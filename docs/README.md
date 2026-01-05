@@ -1,113 +1,70 @@
-# AI Text Detection Documentation
+# DetectAI: AI Text Detection System
 
-This folder contains comprehensive documentation for the AI text detection system.
+A powerful, GUI-based system for detecting AI-generated text using machine learning and neural networks. Features automated data collection, diverse AI content generation, and interactive model training.
 
-## Documentation Structure
+## 🚀 Quick Start
 
-### 📋 [TRAINING_WORKFLOW.md](TRAINING_WORKFLOW.md)
-**Complete training workflow guide**
-- Detailed workflow diagram (text-based)
-- Step-by-step process from data collection to deployment
-- Configuration parameters and best practices
-- Troubleshooting guide and performance monitoring
-- File structure and organization
+1. **Install Dependencies**
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   ```
 
-### 🏗️ [MODEL_ARCHITECTURE.md](../MODEL_ARCHITECTURE.md)
-**Technical model architecture details**
-- Ensemble classifier design (Random Forest + Logistic Regression)
-- Feature engineering (TF-IDF + 12 linguistic features)
-- Dynamic confidence estimation algorithm
-- Probability calibration and cross-validation
-- Performance metrics and limitations
+2. **Launch the GUI**
+   ```bash
+   python3 run_gui.py
+   ```
 
-### ⚡ [QUICK_REFERENCE.md](QUICK_REFERENCE.md)
-**Essential commands and workflows**
-- Setup and installation commands
-- Common workflows (first-time setup, retraining, API usage)
-- Configuration examples
-- Troubleshooting common issues
-- API endpoint documentation
+3. **Set up API Keys**
+   Create a `.api_keys` file in the project root:
+   ```bash
+   HUGGINGFACE_API_KEY=your_token_here
+   ```
 
-### ⚙️ [CONFIG_USAGE.md](CONFIG_USAGE.md)
-**Configuration-based training guide**
-- Complete guide to using config.yaml
-- Parameter explanations and examples
-- Workflow templates for different use cases
-- Troubleshooting configuration issues
-- Best practices for parameter tuning
+## ✨ Key Features
 
-## Quick Start
+### 🖥️ Interactive GUI
+- **Dashboard**: Monitor system resources.
+- **Config Editor**: Syntax-highlighted YAML editor for full system control.
+- **Data Collection**:
+  - Scrape verified human articles from 40+ news sites (BBC, Reuters, etc.).
+  - Generate AI samples using LLMs (Ollama/HuggingFace) with configurable topics.
+- **Training**:
+  - Train Neural Networks (MLP) or Ensemble models.
+  - Tune hyperparameters (Epochs, Learning Rate, Batch Size) directly in the UI.
+  - Visual analytics (ROC curves, Confusion Matrices).
+- **Detection**:
+  - Analyze text or PDFs.
+  - Color-coded highlighting of AI-suspected segments.
 
-1. **Setup**: Follow the [Quick Reference Guide](QUICK_REFERENCE.md#setup)
-2. **Workflow**: Understand the complete process in [Training Workflow](TRAINING_WORKFLOW.md)
-3. **Architecture**: Learn about the model design in [Model Architecture](../MODEL_ARCHITECTURE.md)
+### ⚙️ Customizable
+- **AI Topics**: Define what the AI writes about (e.g., "Politics", "Science") in `config.yaml`.
+- **Training Params**: Adjust epochs, batch sizes, and model types.
+- **Data Sources**: Add your own RSS feeds for human data.
 
-## Key Concepts
+### 🧠 Advanced Models
+- **Neural Network**: PyTorch-based MLP with TF-IDF features.
+- **Ensemble**: Voting classifier combining Random Forest and Logistic Regression.
+- **Robust Features**: Uses perplexity approximation, entropy, and linguistic patterns.
 
-### Data Collection
-- **Human Content**: Web scraping from RSS feeds (BBC, NPR, Reuters, etc.)
-- **AI Content**: Generated samples with diverse topics and styles
-- **Quality Control**: Minimum word count, duplicate removal, content filtering
-
-### Model Training
-- **Ensemble Approach**: Voting classifier with Random Forest and Logistic Regression
-- **Feature Engineering**: TF-IDF + linguistic features for comprehensive analysis
-- **Calibration**: Isotonic calibration for reliable probability estimates
-- **Cross-Validation**: 5-fold CV for robust performance estimation
-
-### Confidence Estimation
-- **Dynamic Confidence**: Multi-factor calculation (not fixed at 80%)
-- **Factors**: Probability distance, text length, linguistic features
-- **Range**: 30-95% based on prediction certainty
-
-### Deployment
-- **API Integration**: FastAPI endpoint for easy integration
-- **Model Serialization**: Pickle format with all components
-- **Testing Framework**: Comprehensive testing and validation
-
-## File Organization
+## 📂 File Structure
 
 ```
 detectai/
-├── docs/                          # This documentation folder
-│   ├── README.md                  # This file
-│   ├── TRAINING_WORKFLOW.md       # Complete workflow guide
-│   └── QUICK_REFERENCE.md         # Essential commands
-├── MODEL_ARCHITECTURE.md          # Technical model details
-├── README.md                      # Project overview
-└── QUICKSTART.md                  # 5-minute setup guide
+├── app/                     # Application source code
+│   ├── gui/                 # PyQt6 GUI components
+│   ├── services/            # Core logic (Detector, Scraper, Generator)
+│   └── main.py              # FastAPI backend
+├── scripts/                 # Utility scripts (PDF import, etc.)
+├── training_data/           # Collected Human/AI datasets
+├── docs/                    # Documentation
+├── config.yaml              # Main configuration
+└── run_gui.py               # Application entry point
 ```
 
-## Getting Help
+## 📚 Documentation
 
-### For New Users
-1. Start with [QUICKSTART.md](../QUICKSTART.md) for 5-minute setup
-2. Follow [QUICK_REFERENCE.md](QUICK_REFERENCE.md) for essential commands
-3. Understand the process in [TRAINING_WORKFLOW.md](TRAINING_WORKFLOW.md)
-
-### For Developers
-1. Review [MODEL_ARCHITECTURE.md](../MODEL_ARCHITECTURE.md) for technical details
-2. Study the workflow in [TRAINING_WORKFLOW.md](TRAINING_WORKFLOW.md)
-3. Use [QUICK_REFERENCE.md](QUICK_REFERENCE.md) for common tasks
-
-### For Troubleshooting
-- Check [TRAINING_WORKFLOW.md](TRAINING_WORKFLOW.md#troubleshooting)
-- Review [QUICK_REFERENCE.md](QUICK_REFERENCE.md#troubleshooting)
-- Examine error messages and logs
-
-## Contributing
-
-When adding new features or making changes:
-
-1. **Update Documentation**: Modify relevant documentation files
-2. **Add Examples**: Include usage examples in quick reference
-3. **Update Workflow**: Reflect any process changes in workflow guide
-4. **Test Instructions**: Ensure all commands work as documented
-
-## Documentation Standards
-
-- **Code Blocks**: Use syntax highlighting for all code examples
-- **File Paths**: Use relative paths from project root
-- **Commands**: Include expected output where helpful
-- **Diagrams**: Use text-based diagrams for portability
-- **Cross-References**: Link between related documentation sections
+- **[Quick Reference](QUICK_REFERENCE.md)**: Essential commands and GUI guide.
+- **[Configuration Guide](CONFIG_USAGE.md)**: Details on `config.yaml` parameters.
+- **[Training Workflow](TRAINING_WORKFLOW.md)**: Deep dive into the methodology. (Note: Workflow concepts apply, but use GUI instead of scripts).
