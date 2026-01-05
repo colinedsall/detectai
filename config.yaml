@@ -1,242 +1,420 @@
-# Files to analyze for AI detection
-files_to_analyze:
-  # Manually-generated or real files are RELATIVE TO PROJECT ROOT
-  - "example.txt"
-  - "example1.txt" 
-  - "example3.txt"
-  - "example4.txt"
-  - "example5.txt"
-  - "example6.txt"
-  - "example7.txt"
-  - "example8.txt"
-  - "example9.txt"
-  - "sample_ai_text.txt"
-  - "IA_human.txt"
-  - "DD1_human.txt"
-
-# Training data collection configuration
-training:
-  # Human content collection
-  human_articles_per_site: 50      # Articles to scrape per website
-  max_sites: 20                    # Maximum websites to scrape
-  min_human_words: 400             # Minimum words for human articles (filters out short teasers)
-  
-  # Optional: List of sites to scrape. If omitted, built-in defaults are used in the scraper (limited).
-  # Each entry supports: name (required), url (required), rss (optional), max_pages (optional), description (optional)
-  # If max_pages is not set for a site, it defaults to human_articles_per_site.
-  # Example configuration:
-  sites:
-    - name: reuters
-      url: "https://www.reuters.com"
-      rss: "http://feeds.reuters.com/reuters/topNews"
-      max_pages: 10
-      description: "International news agency"
-    - name: bbc_news
-      url: "https://www.bbc.com/news"
-      rss: "https://feeds.bbci.co.uk/news/rss.xml"
-      description: "BBC News"
-    - name: npr
-      url: "https://www.npr.org"
-      rss: "https://feeds.npr.org/1001/rss.xml"
-      description: "National Public Radio"
-    - name: cnn
-      url: "https://www.cnn.com"
-      rss: "http://rss.cnn.com/rss/edition.rss"
-      description: "CNN News"
-    - name: washington_post
-      url: "https://www.washingtonpost.com"
-      rss: "https://feeds.washingtonpost.com/rss/world"
-      description: "Washington Post"
-    - name: new_york_times
-      url: "https://www.nytimes.com"
-      rss: "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"
-      description: "New York Times"
-    - name: guardian
-      url: "https://www.theguardian.com"
-      rss: "https://www.theguardian.com/world/rss"
-      description: "The Guardian"
-    - name: ap_news
-      url: "https://apnews.com"
-      rss: "https://feeds.apnews.com/rss/ap/topnews"
-      description: "Associated Press"
-    - name: techcrunch
-      url: "https://techcrunch.com"
-      rss: "https://techcrunch.com/feed/"
-      description: "Technology news and startup coverage"
-    - name: ars_technica
-      url: "https://arstechnica.com"
-      rss: "https://feeds.arstechnica.com/arstechnica/index/"
-      description: "Technology and science news"
-    - name: wired
-      url: "https://www.wired.com"
-      rss: "https://www.wired.com/feed/rss"
-      description: "Technology, science, and culture"
-    - name: verge
-      url: "https://www.theverge.com"
-      rss: "https://www.theverge.com/rss/index.xml"
-      description: "Technology and science news"
-    - name: scientific_american
-      url: "https://www.scientificamerican.com"
-      rss: "https://rss.sciam.com/ScientificAmerican-Global"
-      description: "Popular science magazine"
-    - name: national_geographic
-      url: "https://www.nationalgeographic.com"
-      rss: "https://feeds.nationalgeographic.com/ng/News/News_Main"
-      description: "Science, nature, and exploration"
-    - name: smithsonian
-      url: "https://www.smithsonianmag.com"
-      rss: "https://www.smithsonianmag.com/rss/"
-      description: "Science, history, and culture"
-    - name: discover_magazine
-      url: "https://www.discovermagazine.com"
-      rss: "https://www.discovermagazine.com/feed"
-      description: "Science and discovery"
-    - name: popular_science
-      url: "https://www.popsci.com"
-      rss: "https://www.popsci.com/rss.xml"
-      description: "Popular science and technology"
-    - name: science_news
-      url: "https://www.sciencenews.org"
-      rss: "https://www.sciencenews.org/feed"
-      description: "Science news and research"
-    - name: phys_org
-      url: "https://phys.org"
-      rss: "https://phys.org/rss-feed/"
-      description: "Physics and science news"
-    - name: science_daily
-      url: "https://www.sciencedaily.com"
-      rss: "https://www.sciencedaily.com/rss/all.xml"
-      description: "Science news and research"
-    - name: nature_news
-      url: "https://www.nature.com/news"
-      rss: "https://www.nature.com/news.rss"
-      description: "Nature news and commentary"
-    - name: bbc_science
-      url: "https://www.bbc.com/news/science-environment"
-      rss: "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml"
-      description: "BBC Science and Environment"
-    - name: npr_science
-      url: "https://www.npr.org/sections/science"
-      rss: "https://feeds.npr.org/1007/rss.xml"
-      description: "NPR Science"
-    - name: slate
-      url: "https://slate.com"
-      rss: "https://feeds.slate.com/slate-101"
-      description: "News, politics, and culture"
-    - name: atlantic
-      url: "https://www.theatlantic.com"
-      rss: "https://www.theatlantic.com/feed/all/"
-      description: "Long-form journalism and analysis"
-    - name: new_yorker
-      url: "https://www.newyorker.com"
-      rss: "https://www.newyorker.com/feed/news"
-      description: "Long-form journalism and culture"
-    - name: economist
-      url: "https://www.economist.com"
-      rss: "https://www.economist.com/the-world-this-week/rss.xml"
-      description: "International news and analysis"
-    - name: time
-      url: "https://time.com"
-      rss: "https://feeds.feedburner.com/time/topstories"
-      description: "Time Magazine"
-    - name: newsweek
-      url: "https://www.newsweek.com"
-      rss: "https://www.newsweek.com/rss"
-      description: "Newsweek"
-    - name: usatoday
-      url: "https://www.usatoday.com"
-      rss: "https://rssfeeds.usatoday.com/usatoday-NewsTopStories"
-      description: "USA Today"
-    - name: cbs_news
-      url: "https://www.cbsnews.com"
-      rss: "https://www.cbsnews.com/latest/rss/main"
-      description: "CBS News"
-    - name: abc_news
-      url: "https://abcnews.go.com"
-      rss: "https://abcnews.go.com/abcnews/topstories"
-      description: "ABC News"
-    - name: nbc_news
-      url: "https://www.nbcnews.com"
-      rss: "https://feeds.nbcnews.com/nbcnews/public/news"
-      description: "NBC News"
-    - name: fox_news
-      url: "https://www.foxnews.com"
-      rss: "https://moxie.foxnews.com/google-publisher/latest.xml"
-      description: "Fox News"
-    - name: bloomberg
-      url: "https://www.bloomberg.com"
-      rss: "https://feeds.bloomberg.com/markets/news.rss"
-      description: "Bloomberg financial news"
-    - name: wall_street_journal
-      url: "https://www.wsj.com"
-      rss: "https://feeds.a.dj.com/rss/RSSWorldNews.xml"
-      description: "Wall Street Journal"
-    - name: financial_times
-      url: "https://www.ft.com"
-      rss: "https://www.ft.com/rss/home"
-      description: "Financial Times"
-    - name: cnbc
-      url: "https://www.cnbc.com"
-      rss: "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100003114"
-      description: "CNBC business news"
-    - name: marketwatch
-      url: "https://www.marketwatch.com"
-      rss: "https://feeds.marketwatch.com/marketwatch/topstories/"
-      description: "MarketWatch financial news"
-    - name: business_insider
-      url: "https://www.businessinsider.com"
-      rss: "https://feeds.businessinsider.com/custom/all"
-      description: "Business Insider"
-    - name: forbes
-      url: "https://www.forbes.com"
-      rss: "https://www.forbes.com/business/feed/"
-      description: "Forbes business news"
-    - name: hbr
-      url: "https://hbr.org"
-      rss: "https://hbr.org/feed"
-      description: "Harvard Business Review"
-    - name: fast_company
-      url: "https://www.fastcompany.com"
-      rss: "https://www.fastcompany.com/feed"
-      description: "Fast Company business innovation"
-    - name: inc
-      url: "https://www.inc.com"
-
-  # AI content generation
-  ai_samples: 500                  # Number of AI samples to generate
-  target_words_per_sample: 700     # Target words per AI sample
-  
-  # Quality control
-  filter_duplicates: true          # Remove duplicate content
-  validate_content: true           # Validate content quality
-
-# Model configuration  
-model:
-  # Model type: "ensemble", "random_forest", or "logistic_regression"
-  type: "ensemble"
-  
-  # Training parameters
-  test_size: 0.2                   # Test split ratio (20% for testing)
-  cv_folds: 5                      # Cross-validation folds
-  
-  # Feature engineering (perhaps explore hyperparameters here)
-  max_features: 3000               # Maximum TF-IDF features
-  ngram_range: [1, 2]              # N-gram range for TF-IDF
-  
-  # Ensemble parameters (if using ensemble)
-  random_forest_estimators: 200    # Number of trees in Random Forest
-  random_forest_max_depth: 10      # Maximum depth of trees
-  logistic_regression_c: 1.0       # Regularization strength
-
-# API configuration
 api:
-  host: "127.0.0.1"
+  host: 127.0.0.1
   port: 8000
   reload: true
-
-# Output configuration
+files_to_analyze: null
+model:
+  cv_folds: 5
+  logistic_regression_c: 1.0
+  max_features: 3000
+  ngram_range:
+  - 1
+  - 2
+  random_forest_estimators: 200
+  random_forest_max_depth: 10
+  test_size: 0.2
+  type: ensemble
 output:
-  model_file: "ai_detector_model.pkl"    # Model output file
-  training_data_dir: "training_data"     # Training data directory
-  scraped_data_dir: "scraped_data"       # Scraped data directory
-  save_reports: true                     # Save training reports
+  model_file: ai_detector_model.pkl
+  save_reports: true
+  scraped_data_dir: scraped_data
+  training_data_dir: training_data
+training:
+  ai_samples: 500
+  ai_topics:
+  - machine learning algorithms
+  - artificial intelligence applications
+  - data science methodologies
+  - neural network architectures
+  - cloud computing solutions
+  - cybersecurity best practices
+  - blockchain technology
+  - internet of things
+  - quantum computing
+  - robotics and automation
+  - natural language processing
+  - computer vision systems
+  - big data analytics
+  - software development practices
+  - database management systems
+  - the meaning of life and purpose
+  - happiness and personal fulfillment
+  - ethics and moral philosophy
+  - consciousness and the mind
+  - free will versus determinism
+  - quick and easy dinner recipes
+  - healthy breakfast ideas
+  - vegetarian cooking techniques
+  - baking bread from scratch
+  - meal prep strategies
+  - productivity and time management
+  - work-life balance strategies
+  - stress management techniques
+  - mindfulness and meditation
+  - personal finance tips
+  - natural language processing
+  - computer vision
+  - reinforcement learning
+  - quantum machine learning
+  - edge AI
+  - AI ethics
+  - AI governance
+  - Explainable AI
+  - AI in healthcare
+  - AI in finance
+  - AI in manufacturing
+  - AI in agriculture
+  - AI in education
+  - AI for climate modeling
+  - AI for social impact
+  - AI in robotics
+  - AI in autonomous vehicles
+  - AI in smart cities
+  - AI in entertainment
+  - immigration policy
+  - healthcare reform
+  - climate change legislation
+  - economic policy
+  - tax reform
+  - foreign relations
+  - national security
+  - defense budget
+  - infrastructure spending
+  - COVID-19 response
+  - mental health
+  - homelessness
+  - unemployment
+  - housing market
+  - cryptocurrency regulation
+  - technology policy
+  - energy policy
+  - trade deals
+  - public health
+  - vaccination mandates
+  - school choice
+  - public school funding
+  - teacher strikes
+  - higher education tuition
+  - student loan debt
+  - college admissions
+  - redistricting
+  - voter ID laws
+  - campaign finance
+  - political polarization
+  - social media regulation
+  - free speech
+  - media bias
+  - journalism ethics
+  - fact-checking
+  - fake news
+  - public opinion polling
+  - surveillance
+  - privacy laws
+  - data protection
+  - cyber attacks
+  - information warfare
+  - public transportation
+  - infrastructure projects
+  - clean energy
+  - carbon pricing
+  - environmental justice
+  - public lands
+  - federalism
+  - state rights
+  - municipal governance
+  - urban planning
+  - gentrification
+  - housing affordability
+  - substance abuse
+  - opioid crisis
+  - drug policy
+  - decriminalization
+  - legalization
+  - drug enforcement
+  - public safety
+  - police reform
+  - community policing
+  - bail reform
+  - prison reform
+  - corruption
+  - government accountability
+  - public sector reform
+  - public procurement
+  - budget deficits
+  - national debt
+  - inflation
+  - interest rates
+  - monetary policy
+  - fiscal policy
+  - budget allocations
+  - disaster relief
+  - hurricane response
+  - flood management
+  - wildfire policy
+  - climate adaptation
+  - energy independence
+  - oil and gas policy
+  - electric grid
+  - renewable energy
+  - public utilities
+  - telecommunications
+  - 5G rollout
+  - fiber optics
+  - net neutrality
+  - digital divide
+  - e-government
+  - open data
+  - government transparency
+  - public sector IT
+  - urban development
+  - smart cities
+  - public health initiatives
+  - public schooling
+  - K-12 education
+  - higher education
+  - veterans affairs
+  - homeland security
+  - foreign aid
+  - international trade
+  - USMCA
+  - NAFTA
+  - trade wars
+  - tariffs
+  - export controls
+  - sanctions
+  - international relations
+  - peacekeeping
+  - global health
+  - pandemic preparedness
+  - public diplomacy
+  - Cuba relations
+  - North Korea
+  - Iran sanctions
+  - Middle East policy
+  - Middle East peace
+  - terrorism
+  - counterterrorism
+  - civil-military relations
+  - defense strategy
+  - NATO
+  - budget allocation
+  - public policy
+  - social policy
+  - public opinion
+  - media coverage
+  - political parties
+  - government structure
+  - congressional committees
+  - legislation
+  - policy debates
+  - policy analysis
+  - policy research
+  - policy recommendations
+  - policy implementation
+  - policy evaluation
+  - policy outcomes
+  - policy impact
+  - policy changes
+  - policy reforms
+  - policy challenges
+  - policy solutions
+  - policy discussions
+  - policy forums
+  - policy think tanks
+  - policy institutes
+  - policy think pieces
+  - policy reports
+  - policy briefs
+  - policy analysis reports
+  - policy white papers
+  - policy studies
+  - policy reviews
+  - policy papers
+  - policy literature
+  filter_duplicates: true
+  human_articles_per_site: 50
+  max_sites: 100
+  min_human_words: 400
+  neural_network:
+    batch_size: 32
+    epochs: 100
+    hidden_size: 64
+    learning_rate: 0.001
+  sites:
+  - description: International news agency
+    max_pages: 10
+    name: reuters
+    rss: http://feeds.reuters.com/reuters/topNews
+    url: https://www.reuters.com
+  - description: BBC News
+    name: bbc_news
+    rss: https://feeds.bbci.co.uk/news/rss.xml
+    url: https://www.bbc.com/news
+  - description: National Public Radio
+    name: npr
+    rss: https://feeds.npr.org/1001/rss.xml
+    url: https://www.npr.org
+  - description: CNN News
+    name: cnn
+    rss: http://rss.cnn.com/rss/edition.rss
+    url: https://www.cnn.com
+  - description: Washington Post
+    name: washington_post
+    rss: https://feeds.washingtonpost.com/rss/world
+    url: https://www.washingtonpost.com
+  - description: New York Times
+    name: new_york_times
+    rss: https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml
+    url: https://www.nytimes.com
+  - description: The Guardian
+    name: guardian
+    rss: https://www.theguardian.com/world/rss
+    url: https://www.theguardian.com
+  - description: Associated Press
+    name: ap_news
+    rss: https://feeds.apnews.com/rss/ap/topnews
+    url: https://apnews.com
+  - description: Technology news and startup coverage
+    name: techcrunch
+    rss: https://techcrunch.com/feed/
+    url: https://techcrunch.com
+  - description: Technology and science news
+    name: ars_technica
+    rss: https://feeds.arstechnica.com/arstechnica/index/
+    url: https://arstechnica.com
+  - description: Technology, science, and culture
+    name: wired
+    rss: https://www.wired.com/feed/rss
+    url: https://www.wired.com
+  - description: Technology and science news
+    name: verge
+    rss: https://www.theverge.com/rss/index.xml
+    url: https://www.theverge.com
+  - description: Popular science magazine
+    name: scientific_american
+    rss: https://rss.sciam.com/ScientificAmerican-Global
+    url: https://www.scientificamerican.com
+  - description: Science, nature, and exploration
+    name: national_geographic
+    rss: https://feeds.nationalgeographic.com/ng/News/News_Main
+    url: https://www.nationalgeographic.com
+  - description: Science, history, and culture
+    name: smithsonian
+    rss: https://www.smithsonianmag.com/rss/
+    url: https://www.smithsonianmag.com
+  - description: Science and discovery
+    name: discover_magazine
+    rss: https://www.discovermagazine.com/feed
+    url: https://www.discovermagazine.com
+  - description: Popular science and technology
+    name: popular_science
+    rss: https://www.popsci.com/rss.xml
+    url: https://www.popsci.com
+  - description: Science news and research
+    name: science_news
+    rss: https://www.sciencenews.org/feed
+    url: https://www.sciencenews.org
+  - description: Physics and science news
+    name: phys_org
+    rss: https://phys.org/rss-feed/
+    url: https://phys.org
+  - description: Science news and research
+    name: science_daily
+    rss: https://www.sciencedaily.com/rss/all.xml
+    url: https://www.sciencedaily.com
+  - description: Nature news and commentary
+    name: nature_news
+    rss: https://www.nature.com/news.rss
+    url: https://www.nature.com/news
+  - description: BBC Science and Environment
+    name: bbc_science
+    rss: https://feeds.bbci.co.uk/news/science_and_environment/rss.xml
+    url: https://www.bbc.com/news/science-environment
+  - description: NPR Science
+    name: npr_science
+    rss: https://feeds.npr.org/1007/rss.xml
+    url: https://www.npr.org/sections/science
+  - description: News, politics, and culture
+    name: slate
+    rss: https://feeds.slate.com/slate-101
+    url: https://slate.com
+  - description: Long-form journalism and analysis
+    name: atlantic
+    rss: https://www.theatlantic.com/feed/all/
+    url: https://www.theatlantic.com
+  - description: Long-form journalism and culture
+    name: new_yorker
+    rss: https://www.newyorker.com/feed/news
+    url: https://www.newyorker.com
+  - description: International news and analysis
+    name: economist
+    rss: https://www.economist.com/the-world-this-week/rss.xml
+    url: https://www.economist.com
+  - description: Time Magazine
+    name: time
+    rss: https://feeds.feedburner.com/time/topstories
+    url: https://time.com
+  - description: Newsweek
+    name: newsweek
+    rss: https://www.newsweek.com/rss
+    url: https://www.newsweek.com
+  - description: USA Today
+    name: usatoday
+    rss: https://rssfeeds.usatoday.com/usatoday-NewsTopStories
+    url: https://www.usatoday.com
+  - description: CBS News
+    name: cbs_news
+    rss: https://www.cbsnews.com/latest/rss/main
+    url: https://www.cbsnews.com
+  - description: ABC News
+    name: abc_news
+    rss: https://abcnews.go.com/abcnews/topstories
+    url: https://abcnews.go.com
+  - description: NBC News
+    name: nbc_news
+    rss: https://feeds.nbcnews.com/nbcnews/public/news
+    url: https://www.nbcnews.com
+  - description: Fox News
+    name: fox_news
+    rss: https://moxie.foxnews.com/google-publisher/latest.xml
+    url: https://www.foxnews.com
+  - description: Bloomberg financial news
+    name: bloomberg
+    rss: https://feeds.bloomberg.com/markets/news.rss
+    url: https://www.bloomberg.com
+  - description: Wall Street Journal
+    name: wall_street_journal
+    rss: https://feeds.a.dj.com/rss/RSSWorldNews.xml
+    url: https://www.wsj.com
+  - description: Financial Times
+    name: financial_times
+    rss: https://www.ft.com/rss/home
+    url: https://www.ft.com
+  - description: CNBC business news
+    name: cnbc
+    rss: https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100003114
+    url: https://www.cnbc.com
+  - description: MarketWatch financial news
+    name: marketwatch
+    rss: https://feeds.marketwatch.com/marketwatch/topstories/
+    url: https://www.marketwatch.com
+  - description: Business Insider
+    name: business_insider
+    rss: https://feeds.businessinsider.com/custom/all
+    url: https://www.businessinsider.com
+  - description: Forbes business news
+    name: forbes
+    rss: https://www.forbes.com/business/feed/
+    url: https://www.forbes.com
+  - description: Harvard Business Review
+    name: hbr
+    rss: https://hbr.org/feed
+    url: https://hbr.org
+  - description: Fast Company business innovation
+    name: fast_company
+    rss: https://www.fastcompany.com/feed
+    url: https://www.fastcompany.com
+  - name: inc
+    url: https://www.inc.com
+  target_words_per_sample: 700
+  validate_content: true

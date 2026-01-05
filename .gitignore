@@ -53,6 +53,7 @@ personal/
 *.pkl
 *.model
 *.joblib
+.api_keys
 
 # Logs
 *.log

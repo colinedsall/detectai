@@ -327,7 +327,33 @@ class MLTextDetector:
         # Save the model
         self.save_model()
         
-        return accuracy
+        # Build detailed metrics for visualization
+        from sklearn.metrics import confusion_matrix, roc_curve, precision_recall_curve
+        
+        cm = confusion_matrix(y_test, y_pred)
+        fpr, tpr, roc_thresholds = roc_curve(y_test, y_pred_proba[:, 1])
+        precision, recall, pr_thresholds = precision_recall_curve(y_test, y_pred_proba[:, 1])
+        
+        # Feature importance (for ensemble/random_forest)
+        feature_importance = None
+        if hasattr(self.model, 'feature_importances_'):
+            feature_importance = self.model.feature_importances_.tolist()
+        elif hasattr(self.model, 'named_steps') and hasattr(self.model.named_steps.get('classifier', None), 'feature_importances_'):
+            feature_importance = self.model.named_steps['classifier'].feature_importances_.tolist()
+        
+        metrics = {
+            'accuracy': accuracy,
+            'auc_score': auc_score,
+            'confusion_matrix': cm.tolist(),
+            'roc_curve': {'fpr': fpr.tolist(), 'tpr': tpr.tolist()},
+            'precision_recall': {'precision': precision.tolist(), 'recall': recall.tolist()},
+            'feature_importance': feature_importance,
+            'y_test': y_test.tolist(),
+            'y_pred': y_pred.tolist(),
+            'y_pred_proba': y_pred_proba[:, 1].tolist()
+        }
+        
+        return metrics
     
     def _calculate_confidence_thresholds(self, y_true, y_pred_proba):
         """Calculate confidence thresholds based on validation performance."""
