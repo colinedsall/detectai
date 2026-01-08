@@ -57,7 +57,7 @@ class MainWindow(QMainWindow):
         splitter.addWidget(self.tabs)
         
         # Terminal output
-        terminal_group = QGroupBox("Terminal Output")
+        terminal_group = QGroupBox("Terminal")
         terminal_layout = QVBoxLayout(terminal_group)
         self.terminal = QPlainTextEdit()
         self.terminal.setReadOnly(True)
@@ -355,14 +355,27 @@ class MainWindow(QMainWindow):
         results_group = QGroupBox("Detection Results")
         results_layout = QVBoxLayout(results_group)
         
-        # Overall score
-        score_layout = QHBoxLayout()
-        score_layout.addWidget(QLabel("Overall AI Probability:"))
-        self.overall_score_label = QLabel("-")
-        self.overall_score_label.setFont(QFont("Menlo", 16, QFont.Weight.Bold))
-        score_layout.addWidget(self.overall_score_label)
-        score_layout.addStretch()
-        results_layout.addLayout(score_layout)
+        # Scores layout
+        scores_layout = QHBoxLayout()
+        
+        # NN Score
+        nn_layout = QVBoxLayout()
+        nn_layout.addWidget(QLabel("Neural Network Score:"))
+        self.nn_score_label = QLabel("-")
+        self.nn_score_label.setFont(QFont("Menlo", 16, QFont.Weight.Bold))
+        nn_layout.addWidget(self.nn_score_label)
+        scores_layout.addLayout(nn_layout)
+        
+        # ML Score
+        ml_layout = QVBoxLayout()
+        ml_layout.addWidget(QLabel("Ensemble/RF Score:"))
+        self.ml_score_label = QLabel("-")
+        self.ml_score_label.setFont(QFont("Menlo", 16, QFont.Weight.Bold))
+        ml_layout.addWidget(self.ml_score_label)
+        scores_layout.addLayout(ml_layout)
+        
+        scores_layout.addStretch()
+        results_layout.addLayout(scores_layout)
         
         # Legend
         legend = QLabel("Legend: <span style='background-color:#ff6b6b;'>High AI (>70%)</span> | "
@@ -416,95 +429,122 @@ class MainWindow(QMainWindow):
         self._log("Analyzing text for AI content...")
         
         try:
-            import sys
-            sys.path.insert(0, os.path.join(PROJECT_ROOT, 'scripts'))
-            
-            # Try loading Neural Network model first
-            from app.services.nn_text_detector import NeuralNetworkDetector
-            nn_detector = NeuralNetworkDetector()
-            
-            # Check if NN model exists
-            if os.path.exists(nn_detector.model_path):
-                self._log("Using Neural Network model for detection")
-                detector = nn_detector
-                detector.load_model()
-            else:
-                # Fallbck to standard ML detector
+                import sys
+                sys.path.insert(0, os.path.join(PROJECT_ROOT, 'scripts'))
+                
+                # Load models
+                nn_detector = None
+                ml_detector = None
+                
+                # Try loading Neural Network model
+                from app.services.nn_text_detector import NeuralNetworkDetector
+                temp_nn = NeuralNetworkDetector()
+                if os.path.exists(temp_nn.model_path):
+                    temp_nn.load_model()
+                    nn_detector = temp_nn
+                    self._log("Loaded Neural Network model")
+                
+                # Try loading Standard ML model
                 from app.services.ml_text_detector import MLTextDetector
-                detector = MLTextDetector()
-                if not detector.is_trained:
+                temp_ml = MLTextDetector()
+                if temp_ml.is_trained:
+                    ml_detector = temp_ml
+                    self._log("Loaded Standard ML model")
+                    
+                if not nn_detector and not ml_detector:
                      QMessageBox.warning(self, "No Model", 
-                        "No trained model found. Please train a model first.")
+                        "No trained models found. Please train a model first.")
                      return
-                self._log("Using Standard ML model (Random Forest/Ensemble)")
-            
-            # Split text into segments (~50 words each)
-            words = text.split()
-            segment_size = 50
-            segments = []
-            
-            for i in range(0, len(words), segment_size):
-                segment_words = words[i:i + segment_size]
-                segments.append(' '.join(segment_words))
-            
-            # Analyze each segment
-            results = []
-            total_ai_prob = 0
-            
-            for segment in segments:
-                if len(segment.split()) < 10:  # Skip very short segments
-                    results.append({'text': segment, 'ai_prob': 0, 'skip': True})
-                    continue
+
+                # Get predictions from both models
+                nn_prob = 0.0
+                ml_prob = 0.0
                 
-                prediction = detector.predict(segment)
-                # Handle different key names between detectors
-                ai_prob = prediction.get('probability_ai', prediction.get('probability', 0))
-                total_ai_prob += ai_prob
-                results.append({'text': segment, 'ai_prob': ai_prob, 'skip': False})
-            
-            # Calculate overall score
-            analyzed_count = sum(1 for r in results if not r.get('skip', False))
-            overall_prob = total_ai_prob / analyzed_count if analyzed_count > 0 else 0
-            
-            # Update overall score display
-            self.overall_score_label.setText(f"{overall_prob:.1%}")
-            if overall_prob > 0.7:
-                self.overall_score_label.setStyleSheet("color: #d63031;")
-            elif overall_prob > 0.5:
-                self.overall_score_label.setStyleSheet("color: #f39c12;")
-            else:
-                self.overall_score_label.setStyleSheet("color: #27ae60;")
-            
-            # Build highlighted HTML
-            html_parts = []
-            for result in results:
-                text_segment = result['text']
-                ai_prob = result['ai_prob']
-                
-                if result.get('skip', False):
-                    html_parts.append(f"<span>{text_segment}</span> ")
-                elif ai_prob > 0.7:
-                    html_parts.append(
-                        f"<span style='background-color:#ff6b6b;' title='AI: {ai_prob:.1%}'>{text_segment}</span> "
-                    )
-                elif ai_prob > 0.5:
-                    html_parts.append(
-                        f"<span style='background-color:#ffd93d;' title='AI: {ai_prob:.1%}'>{text_segment}</span> "
-                    )
+                if nn_detector:
+                    pred = nn_detector.predict(text)
+                    nn_prob = pred.get('probability_ai', pred.get('probability', 0))
+                    
+                    self.nn_score_label.setText(f"{nn_prob:.1%}")
+                    self._colorize_score_label(self.nn_score_label, nn_prob)
                 else:
-                    html_parts.append(
-                        f"<span style='background-color:#6bcf63;' title='AI: {ai_prob:.1%}'>{text_segment}</span> "
-                    )
-            
-            html_output = "<p style='line-height:1.8;'>" + "".join(html_parts) + "</p>"
-            self.detection_output.setHtml(html_output)
-            
-            self._log(f"Analysis complete: {len(segments)} segments, overall AI probability: {overall_prob:.1%}")
-            
+                    self.nn_score_label.setText("N/A")
+                    self.nn_score_label.setStyleSheet("color: grey;")
+                    
+                if ml_detector:
+                    pred = ml_detector.predict(text)
+                    ml_prob = pred.get('probability_ai', pred.get('probability', 0))
+                    
+                    self.ml_score_label.setText(f"{ml_prob:.1%}")
+                    self._colorize_score_label(self.ml_score_label, ml_prob)
+                else:
+                    self.ml_score_label.setText("N/A")
+                    self.ml_score_label.setStyleSheet("color: grey;")
+
+                # Use NN for highlighting logic if available, else ML
+                highlight_detector = nn_detector if nn_detector else ml_detector
+                
+                # Split text into segments (~50 words each)
+                words = text.split()
+                segment_size = 50
+                segments = []
+                
+                for i in range(0, len(words), segment_size):
+                    segment_words = words[i:i + segment_size]
+                    segments.append(' '.join(segment_words))
+                
+                # Analyze each segment
+                results = []
+                
+                for segment in segments:
+                    if len(segment.split()) < 10:  # Skip very short segments
+                        results.append({'text': segment, 'ai_prob': 0, 'skip': True})
+                        continue
+                    
+                    prediction = highlight_detector.predict(segment)
+                    ai_prob = prediction.get('probability_ai', prediction.get('probability', 0))
+                    results.append({'text': segment, 'ai_prob': ai_prob, 'skip': False})
+                
+                # Build highlighted HTML
+                html_parts = []
+                for result in results:
+                    text_segment = result['text']
+                    ai_prob = result['ai_prob']
+                    
+                    if result.get('skip', False):
+                        html_parts.append(f"<span>{text_segment}</span> ")
+                    elif ai_prob > 0.7:
+                        html_parts.append(
+                            f"<span style='background-color:#ff6b6b;' title='AI: {ai_prob:.1%}'>{text_segment}</span> "
+                        )
+                    elif ai_prob > 0.5:
+                        html_parts.append(
+                            f"<span style='background-color:#ffd93d;' title='AI: {ai_prob:.1%}'>{text_segment}</span> "
+                        )
+                    else:
+                        html_parts.append(
+                            f"<span style='background-color:#6bcf63;' title='AI: {ai_prob:.1%}'>{text_segment}</span> "
+                        )
+                
+                html_output = "<p style='line-height:1.8;'>" + "".join(html_parts) + "</p>"
+                self.detection_output.setHtml(html_output)
+                
+                self._log(f"Analysis complete: NN={nn_prob:.1%}, ML={ml_prob:.1%}")
+                
         except Exception as e:
             self._log(f"Error during analysis: {e}")
             import traceback
             traceback.print_exc()
+
+    def _colorize_score_label(self, label, prob):
+        """Helper to colorize a score label based on probability."""
+        if prob > 0.7:
+            label.setStyleSheet("color: #d63031;")
+        elif prob > 0.5:
+            label.setStyleSheet("color: #f39c12;")
+        else:
+            label.setStyleSheet("color: #27ae60;")
+            
+
     
     def _create_stats_tab(self):
         """Create the statistics tab."""
